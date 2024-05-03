@@ -9,21 +9,13 @@ import { Tetromino } from "backend/Tetromino.mjs";
 const TetrisGame = () => {
   const width = 5;
   const height = 10;
-  const tetrominoes = [
-    ...Array(10).fill(Tetromino.T_SHAPE),
-    ...Array(10).fill(Tetromino.I_SHAPE),
-    ...Array(10).fill(Tetromino.O_SHAPE),
-    ...Array(10).fill(Tetromino.S_SHAPE),
-    ...Array(10).fill(Tetromino.Z_SHAPE),
-    ...Array(10).fill(Tetromino.L_SHAPE),
-    ...Array(10).fill(Tetromino.M_SHAPE),
-  ];
   const [tetrisBoard, setTetrisBoard] = useState(
     new TetrisBoard(width, height)
   );
-  const [tetrisShuffleBag, setTetrisShuffleBag] = useState(
-    new MyShuffleBag(tetrominoes)
-  );
+  // const [tetrisShuffleBag, setTetrisShuffleBag] = useState(
+    // new MyShuffleBag(tetrominoes)
+  // );
+  const [tetrisShuffleBag, setTetrisShuffleBag] = useState(null);
   const [tetrisScore, setTetrisScore] = useState(new TetrisScore());
 
   const [boardState, setBoardState] = useState(tetrisBoard.getState());
@@ -94,6 +86,15 @@ const TetrisGame = () => {
     const temp = new TetrisScore()
     tetrisBoard.addRowObserver(temp);
     setTetrisScore(temp);
+    const tetrominoes = [
+      ...Array(10).fill(Tetromino.T_SHAPE),
+      ...Array(10).fill(Tetromino.I_SHAPE),
+      ...Array(10).fill(Tetromino.O_SHAPE),
+      ...Array(10).fill(Tetromino.S_SHAPE),
+      ...Array(10).fill(Tetromino.Z_SHAPE),
+      ...Array(10).fill(Tetromino.L_SHAPE),
+      ...Array(10).fill(Tetromino.M_SHAPE),
+    ];
     setTetrisShuffleBag(new MyShuffleBag(tetrominoes));
     return () => {
       tetrisBoard.removeGameOverObservers();
