@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 
 const TetrisCanvas = ({ boardState, width, height }) => {
   const canvasRef = useRef(null);
-  const cellSize = 20; // Adjust the cell size as needed
+  const cellSize = 20;
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -12,37 +12,32 @@ const TetrisCanvas = ({ boardState, width, height }) => {
     if (!ctx) return;
 
     const letterColors = {
-      '.': 'black', // Empty cell color
-      'T': 'purple', // Letter 'T' color
-      'I': 'cyan', // Letter 'I' color
-      'O': 'yellow', // Letter 'O' color
-      'S': 'green', // Letter 'S' color
-      'Z': 'red', // Letter 'Z' color
-      'L': 'orange', // Letter 'L' color
-      'M': 'blue', // Letter 'M' color
+      '.': 'grey', 
+      'T': 'orange', 
+      'I': 'blue', 
+      'O': 'cyan', 
+      'S': 'green', 
+      'Z': 'red', 
+      'L': 'purple', 
+      'M': 'yellow', 
     };
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Draw each cell based on the board state
-    for (let y = 0; y < boardState.length; y++) {
-      for (let x = 0; x < boardState[y].length; x++) {
-        const cellValue = boardState[y][x];
-        const color = letterColors[cellValue] || 'black';
-
+    for (let r = 0; r < boardState.length; r++) {
+      for (let c = 0; c < width; c++) {
+        const cellValue = boardState[r][c];
+        const color = letterColors[cellValue];
         ctx.fillStyle = color;
-        ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+        ctx.fillRect(c * cellSize, r * cellSize, cellSize, cellSize);
         ctx.strokeStyle = 'white';
-        ctx.strokeRect(x * cellSize, y * cellSize, cellSize, cellSize);
+        ctx.strokeRect(c * cellSize, r * cellSize, cellSize, cellSize);
       }
     }
-    console.log('Board State:', boardState);
-  }, [boardState]);
+  }, [boardState, width, height, cellSize]);
 
   return <canvas ref={canvasRef} 
     width={width*cellSize}
     height={height*cellSize}
-    // style={{ border: "2px solid black" }}
   />;
 };
 
