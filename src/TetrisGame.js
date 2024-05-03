@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import TetrisCanvas from "./TetrisCanvas"; // Import the TetrisCanvas component
 import Score from "./Score";
+import Guide from "./Guide";
 import { Board as TetrisBoard } from "backend/Board"; // Import your Board class
 import { Score as TetrisScore } from "backend/Score"; // Import your Score class
 import { MyShuffleBag } from "backend/MyShuffleBag";
@@ -118,6 +119,7 @@ const TetrisGame = () => {
     <div className="tetris-game">
       <TetrisCanvas boardState={boardState} width={width} height={height} />
       <Score score={score} level={level} />
+      <Guide />
     </div>
   );
 };
