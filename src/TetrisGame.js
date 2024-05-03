@@ -7,8 +7,8 @@ import { MyShuffleBag } from "backend/MyShuffleBag";
 import { Tetromino } from "backend/Tetromino.mjs";
 
 const TetrisGame = () => {
-  const width = 10;
-  const height = 20;
+  const width = 5;
+  const height = 10;
   const tetrominoes = [
     ...Array(10).fill(Tetromino.T_SHAPE),
     ...Array(10).fill(Tetromino.I_SHAPE),
@@ -29,6 +29,7 @@ const TetrisGame = () => {
   const [boardState, setBoardState] = useState(tetrisBoard.getState());
   const [score, setScore] = useState(0);
   const [level, setLevel] = useState(0);
+  const [gameOver, setGameOver] = useState(false);
   useEffect(() => {
     const handleKeyPress = (event) => {
       const presses = ["ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp"];
@@ -64,50 +65,48 @@ const TetrisGame = () => {
         // console.log("drop");
       }
       setBoardState(tetrisBoard.getState());
+      // tetrisScore.score +=1000
       setScore(tetrisScore.score);
       setLevel(tetrisScore.level);
-    }, 2000);
-  // }, 2000/(level+1));   
+    // }, 2000);
+  }, 2000/(level+1));   
     return () => {
       clearInterval(interval);
       // console.log("clear interval");
     };
-  }, [level]);
+  }, [level, tetrisBoard, tetrisScore.level, tetrisScore.score, tetrisShuffleBag]);
 
+  // adds game over listener
   useEffect(() => {
-    if(!Object.values(tetrisBoard.rowObservers).includes(tetrisScore)){
-      tetrisBoard.addRowObserver(tetrisScore);
-      console.log("add row observer");
-     }
-    return () => {
-      tetrisBoard.removeRowObservers();
-      // console.log("clear interval");
+    const gameOverObserver = { 
+      update: function(isOver) {
+        console.log('set game over', isOver)
+        setGameOver(isOver);
+      }
     };
-  }, [tetrisScore, tetrisBoard]);
+    console.log('reset go and score obs')
+    tetrisBoard.addGameOverObserver(gameOverObserver);
+    const temp = new TetrisScore()
+    tetrisBoard.addRowObserver(temp);
+    setTetrisScore(temp);
+    setTetrisShuffleBag(new MyShuffleBag(tetrominoes));
+    return () => {
+      tetrisBoard.removeGameOverObservers();
+      tetrisBoard.removeRowObservers();
+      console.log("remove go observers");
+    };
+  }, [tetrisBoard], tetrominoes);
 
   // new game -> new shufflebag and reset score
-  // useEffect(() => {
-  //   const tetrominoes = [
-  //     ...Array(10).fill(Tetromino.T_SHAPE),
-  //     ...Array(10).fill(Tetromino.I_SHAPE),
-  //     ...Array(10).fill(Tetromino.O_SHAPE),
-  //     ...Array(10).fill(Tetromino.S_SHAPE),
-  //     ...Array(10).fill(Tetromino.Z_SHAPE),
-  //     ...Array(10).fill(Tetromino.L_SHAPE),
-  //     ...Array(10).fill(Tetromino.M_SHAPE),
-  //   ];
-  //   console.log("reset shufflebag and score");
-  //   setTetrisShuffleBag(new MyShuffleBag(tetrominoes));
-  //   const temp = new TetrisScore();
-  //   tetrisBoard.addRowObserver(temp);
-  //   setTetrisScore(temp);
-  //   setScore(0);
-  //   setLevel(0);
-
-  //   return () => {
-  //     tetrisBoard.removeRowObservers();
-  //   };
-  // }, [tetrisBoard]);
+  useEffect(() => {
+    if (gameOver) {
+      console.log("reset board");
+      setTetrisBoard(new TetrisBoard(width, height));
+      setGameOver(false);
+    }
+    return () => {
+    };
+  }, [gameOver, tetrominoes]);
 
   return (
     <div className="tetris-game">
