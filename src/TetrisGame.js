@@ -32,16 +32,21 @@ const TetrisGame = () => {
   const [gameOver, setGameOver] = useState(false);
   useEffect(() => {
     const handleKeyPress = (event) => {
-      const presses = ["ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp"];
+      const presses = ["KeyA", "KeyD", "KeyS", "KeyE", "KeyQ", "Space"];
+      console.log('key press', event.code)
       if (presses.includes(event.code)) {
-        if (event.code === "ArrowLeft") {
+        if (event.code === "KeyA") {
           tetrisBoard.moveLeft();
-        } else if (event.code === "ArrowRight") {
+        } else if (event.code === "KeyD") {
           tetrisBoard.moveRight();
-        } else if (event.code === "ArrowDown") {
+        } else if (event.code === "KeyS") {
           tetrisBoard.moveDown();
-        } else if (event.code === "ArrowUp") {
+        } else if (event.code === "KeyE") {
           tetrisBoard.rotateRight();
+        } else if (event.code === "KeyQ") {
+          tetrisBoard.rotateLeft();
+        } else if (event.code === "Space") {
+          tetrisBoard.fallDown();
         }
         setBoardState(tetrisBoard.getState());
       }
@@ -95,7 +100,7 @@ const TetrisGame = () => {
       tetrisBoard.removeRowObservers();
       console.log("remove go observers");
     };
-  }, [tetrisBoard], tetrominoes);
+  }, [tetrisBoard]);
 
   // new game -> new shufflebag and reset score
   useEffect(() => {
@@ -106,7 +111,7 @@ const TetrisGame = () => {
     }
     return () => {
     };
-  }, [gameOver, tetrominoes]);
+  }, [gameOver]);
 
   return (
     <div className="tetris-game">
