@@ -1,4 +1,4 @@
-#Frontend for tdd-mooc-tetris [https://github.com/tjuho/tdd-mooc-tetris](https://github.com/tjuho/tdd-mooc-tetris)
+# Frontend for tdd-mooc-tetris [https://github.com/tjuho/tdd-mooc-tetris](https://github.com/tjuho/tdd-mooc-tetris)
 
 Clone these two projects and create a link to tdd-mooc-tetris-frontend/node_modules/backend which points to the backend src folder
 
