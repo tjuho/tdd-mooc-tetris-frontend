@@ -8,8 +8,8 @@ import { MyShuffleBag } from "backend/MyShuffleBag";
 import { Tetromino } from "backend/Tetromino.mjs";
 
 const TetrisGame = () => {
-  const width = 5;
-  const height = 10;
+  const width = 10;
+  const height = 20;
   const [tetrisBoard, setTetrisBoard] = useState(
     new TetrisBoard(width, height)
   );
@@ -58,6 +58,9 @@ const TetrisGame = () => {
       if (tetrisBoard.hasFalling()) {
         // console.log("tick");
         tetrisBoard.tick();
+        if (!tetrisBoard.hasFalling()) {
+          tetrisBoard.drop(tetrisShuffleBag.getRandomObject());
+        }
       } else {
         tetrisBoard.drop(tetrisShuffleBag.getRandomObject());
         // console.log("drop");
