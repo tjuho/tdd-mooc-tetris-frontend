@@ -26,7 +26,6 @@ const TetrisGame = () => {
   useEffect(() => {
     const handleKeyPress = (event) => {
       const presses = ["KeyA", "KeyD", "KeyS", "KeyE", "KeyQ", "Space"];
-      console.log('key press', event.code)
       if (presses.includes(event.code)) {
         if (event.code === "KeyA") {
           tetrisBoard.moveLeft();
@@ -85,7 +84,6 @@ const TetrisGame = () => {
         setGameOver(isOver);
       }
     };
-    console.log('reset go and score obs')
     tetrisBoard.addGameOverObserver(gameOverObserver);
     const temp = new TetrisScore()
     tetrisBoard.addRowObserver(temp);
